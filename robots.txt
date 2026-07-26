@@ -1,0 +1,3 @@
+﻿User-agent: *
+Allow: /
+Sitemap: https://tidemarkanalytica.com/sitemap.xml
