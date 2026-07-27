@@ -17,6 +17,24 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Tidemark Analytica","url":"https://tidemarkanalytica.com","logo":"https://tidemarkanalytica.com/apple-touch-icon.png","email":"info@tidemarkanalytica.com","description":"Private maritime investment venture. We buy and manage the assets that move the world’s essential goods.","address":{"@type":"PostalAddress","addressLocality":"Dubai","addressCountry":"AE"}}</script>
 <title>Tidemark Analytica</title>
 <style>
+  /* ---- Type scale -------------------------------------------------------
+     One fluid ramp drives every size, so the hierarchy holds identically at
+     every width. Each step is linear between a 320px and a 1440px viewport;
+     because the steps share a slope family, their RATIOS stay stable instead
+     of crossing over (the old CSS mixed 5vw / 4.1vw / 3.2vw / fixed, which
+     inverted the hierarchy below ~508px).
+       tagline  24 -> 40px   largest
+       wordmark 21 -> 34px
+       body     17 -> 25px
+       small    14 -> 17px   contact + footer, the smallest step
+     ------------------------------------------------------------------- */
+  :root {
+    --fs-tagline:  clamp(1.500rem, 1.214rem + 1.43vw, 2.500rem);
+    --fs-wordmark: clamp(1.300rem, 1.080rem + 1.16vw, 2.125rem);
+    --fs-body:     clamp(1.063rem, 0.920rem + 0.71vw, 1.563rem);
+    --fs-small:    clamp(0.875rem, 0.821rem + 0.27vw, 1.063rem);
+  }
+
   html, body { height: 100%; }
   body {
     margin: 0;
@@ -37,7 +55,7 @@
   .top .name {
     margin: 0;
     color: #26317E;
-    font-size: clamp(1.6rem, 5vw, 2.2rem);
+    font-size: var(--fs-wordmark);
     letter-spacing: 0.08em;
     font-variant: small-caps;
   }
@@ -76,8 +94,14 @@
   .sea .lede {
     position: relative;
     top: clamp(0.5rem, 5vh, 3.5rem);
-    font-size: clamp(1rem, 4.1vw, 2.4rem);
-    white-space: nowrap;
+    font-size: var(--fs-tagline);
+    /* needed now that the line can wrap: .lede sits outside .inner, so it
+       never inherited a text-align and its wrapped lines fell back to left */
+    text-align: center;
+    /* was `white-space: nowrap`, which clipped this line at 320px (287px of
+       text in a 272px box, silently cut by the parent's overflow:hidden).
+       Wrapping is the safe behaviour; `balance` keeps the two lines even. */
+    text-wrap: balance;
     margin: 0;
     text-shadow: 0 1px 14px rgba(4, 12, 40, 0.7);
   }
@@ -88,8 +112,12 @@
     text-shadow: 0 1px 14px rgba(4, 12, 40, 0.7);
   }
   .sea .inner p {
-    font-size: clamp(1.3rem, 3.2vw, 1.7rem);
+    font-size: var(--fs-body);
     margin: 0 0 2rem;
+  }
+  /* contact drops to the smallest step, matching the footer */
+  .sea .inner p.contact {
+    font-size: var(--fs-small);
   }
   .sea .inner p:last-child { margin-bottom: 0; }
   .sea a {
@@ -103,7 +131,7 @@
     background: #0B1B45;
     color: #C7D3EC;
     text-align: center;
-    font-size: 0.9rem;
+    font-size: var(--fs-small);
     line-height: 1.5;
     padding: 1rem;
   }
@@ -121,7 +149,7 @@
   <p class="lede">Navigating maritime value through data.</p>
   <div class="inner">
     <p>We buy and manage the assets that move the world&#8217;s essential goods.</p>
-    <p>Contact us at <a href="mailto:info@tidemarkanalytica.com">info@tidemarkanalytica.com</a></p>
+    <p class="contact">Contact us at <a href="mailto:info@tidemarkanalytica.com">info@tidemarkanalytica.com</a></p>
   </div>
 </div>
 
